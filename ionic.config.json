@@ -1,0 +1,8 @@
+{
+  "name": "testcassini",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom",
+  "id": "e2aac8f2"
+}
