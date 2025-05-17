@@ -1,0 +1,46 @@
+{
+  "location": {
+    "latitude": 44.483619,
+    "longitude": 11.374042,
+    "name": "Bologna"
+  },
+  "date": "2025-05-17",
+  "parameters": {
+    "temperature_2m": {
+      "value": null,
+      "unit": "\u00b0C",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    },
+    "relativehumidity_2m": {
+      "value": null,
+      "unit": "%",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    },
+    "surface_pressure": {
+      "value": null,
+      "unit": "hPa",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    },
+    "cloudcover": {
+      "value": null,
+      "unit": "%",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    },
+    "windspeed_10m": {
+      "value": null,
+      "unit": "km/h",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    },
+    "winddirection_10m": {
+      "value": null,
+      "unit": "\u00b0",
+      "source": "Open-Meteo API",
+      "info": "Nessun dato disponibile"
+    }
+  }
+}

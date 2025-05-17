@@ -1,0 +1,34 @@
+{
+    "defibrillators": [
+        {
+            "name": "Defibrillatore DAE semiautomatico",
+            "lat": 44.4990049,
+            "lon": 11.3440128,
+            "address": "V. Augusto Righi, 4, Bologna"
+        },
+        {
+            "name": "Medstep Srl",
+            "lat": 44.4768477,
+            "lon": 11.4175372,
+            "address": "Via Caduti di Sabbiuno, 3, San Lazzaro di Savena"
+        },
+        {
+            "name": "TECNOLIFE S.r.l.",
+            "lat": 44.462108,
+            "lon": 11.273876,
+            "address": "Via Cimarosa Domenico, 71, Casalecchio di Reno"
+        },
+        {
+            "name": "Laerdal Italia Srl",
+            "lat": 44.5135994,
+            "lon": 11.3310025,
+            "address": "Via della Beverara, 48/3a, Bologna"
+        },
+        {
+            "name": "Advanced Life Support S.A.S. - ALS Formazione",
+            "lat": 44.5085572,
+            "lon": 11.3330531,
+            "address": "Via de' Carracci, 6h, Bologna"
+        }
+    ]
+}

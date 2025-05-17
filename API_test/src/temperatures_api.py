@@ -16,6 +16,10 @@ SENTINELHUB_CLIENT_SECRET = "H8ynQ3MCMCm8PBdCopOaBwp51UWtaLdf"
 lat = 44.483619  # Bologna
 lon = 11.374042
 
+# === CREA LA DIRECTORY PER I DATI ===
+data_dir = os.path.join('data')
+os.makedirs(data_dir, exist_ok=True)
+
 # === TROVA L'ULTIMA DATA DISPONIBILE ===
 def get_latest_available_date():
     # Inizia con la data attuale e cerca indietro fino a 10 giorni
@@ -156,21 +160,22 @@ def query_sentinel_5p_gas(gas_name, token):
     try:
         response = requests.post(url, headers=headers, json=body)
         if response.ok:
-            # Salva i dati grezzi
-            with open(f"{gas_name}_data.tiff", "wb") as f:
+            # Salva i dati grezzi nella directory API_test/data
+            tiff_path = os.path.join(data_dir, f"{gas_name}_data.tiff")
+            with open(tiff_path, "wb") as f:
                 f.write(response.content)
             
             # Tenta di creare un'immagine a partire dai dati
             try:
                 # Usa matplotlib per creare una visualizzazione dei dati
-                img = Image.open(f"{gas_name}_data.tiff")
+                img = Image.open(tiff_path)
                 plt.figure(figsize=(8, 8))
                 plt.imshow(img, cmap='jet')  # Usa colormap 'jet' per evidenziare le differenze
                 plt.colorbar(label=f'Concentrazione {gas_name}')
                 plt.title(f"Concentrazione {gas_name} - {date_str}")
                 plt.axis('off')
                 
-                out_file = f"{gas_name}_map.png"
+                out_file = os.path.join(data_dir, f"{gas_name}_map.png")
                 plt.savefig(out_file, dpi=150, bbox_inches='tight')
                 plt.close()
                 
@@ -384,12 +389,13 @@ def get_sentinel_weather_data(token):
         for param_name, param_data in era5_data.items():
             weather_data["parameters"][param_name] = param_data
     
-    # Salva i dati strutturati
-    with open("sentinel_weather_data.json", "w") as f:
+    # Salva i dati strutturati in API_test/data
+    file_path = os.path.join(data_dir, "sentinel_weather_data.json")
+    with open(file_path, "w") as f:
         json.dump(weather_data, f, indent=2)
     
     data_time = weather_data["data_collection_time"] if weather_data["data_collection_time"] else "N/A"
-    print(f"✅ Dati meteo satellitari salvati in sentinel_weather_data.json (timestamp dati: {data_time})")
+    print(f"✅ Dati meteo satellitari salvati in {file_path} (timestamp dati: {data_time})")
     return weather_data
 
 # === RECUPERA DATI ERA5 DA COPERNICUS (VERSIONE TEMPO REALE) ===
@@ -468,25 +474,45 @@ def get_openmeteo_weather_data():
                 "parameters": {}
             }
             
-            # Riorganizza i dati
-            times = data["hourly"]["time"]
+            # Elabora i valori orari per calcolare un singolo valore per ogni parametro
             for param in ["temperature_2m", "relativehumidity_2m", "surface_pressure", 
                         "cloudcover", "windspeed_10m", "winddirection_10m"]:
                 param_data = data["hourly"][param]
-                weather_data["parameters"][param] = []
+                # Filtra valori non nulli
+                valid_values = [val for val in param_data if val is not None]
                 
-                for i, time_str in enumerate(times):
-                    if i < len(param_data):
-                        hour = time_str.split("T")[1][:5]
-                        weather_data["parameters"][param].append({
-                            "time": hour,
-                            "value": param_data[i],
-                            "unit": data["hourly_units"][param]
-                        })
+                if valid_values:
+                    # Calcola la media come singolo valore rappresentativo
+                    avg_value = sum(valid_values) / len(valid_values)
+                    
+                    # Per la direzione del vento la media semplice non è adatta, 
+                    # prendiamo il valore modale (più frequente) se è winddirection_10m
+                    if param == "winddirection_10m" and valid_values:
+                        from collections import Counter
+                        # Arrotonda i valori per considerare direzioni simili
+                        rounded_vals = [round(val/10)*10 for val in valid_values]
+                        counter = Counter(rounded_vals)
+                        most_common = counter.most_common(1)[0][0]
+                        avg_value = most_common
+                    
+                    weather_data["parameters"][param] = {
+                        "value": avg_value,
+                        "unit": data["hourly_units"][param],
+                        "source": "Open-Meteo API"
+                    }
+                else:
+                    weather_data["parameters"][param] = {
+                        "value": None,
+                        "unit": data["hourly_units"][param],
+                        "source": "Open-Meteo API",
+                        "info": "Nessun dato disponibile"
+                    }
             
-            with open("openmeteo_weather_data.json", "w") as f:
+            # Salva i dati nel percorso API_test/data
+            file_path = os.path.join(data_dir, "openmeteo_weather_data.json")
+            with open(file_path, "w") as f:
                 json.dump(weather_data, f, indent=2)
-            print("✅ Dati Open-Meteo salvati in openmeteo_weather_data.json")
+            print(f"✅ Dati Open-Meteo salvati in {file_path}")
             return weather_data
         else:
             print(f"❌ Errore Open-Meteo API: {response.text}")

@@ -1,0 +1,46 @@
+{
+  "location": {
+    "latitude": 44.483619,
+    "longitude": 11.374042,
+    "name": "Bologna"
+  },
+  "timestamp": "2025-05-17 17:34:47",
+  "data_collection_time": null,
+  "parameters": {
+    "temperature_2m": {
+      "description": "Temperatura a 2m",
+      "value": 23.408157148122815,
+      "unit": "\u00b0C",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T17:00:00Z"
+    },
+    "relative_humidity": {
+      "description": "Umidit\u00e0 relativa",
+      "value": 82.08812226037452,
+      "unit": "%",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T17:00:00Z"
+    },
+    "wind_speed": {
+      "description": "Velocit\u00e0 del vento",
+      "value": 15.521756816598343,
+      "unit": "km/h",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T17:00:00Z"
+    },
+    "wind_direction": {
+      "description": "Direzione del vento",
+      "value": 210.0905715110187,
+      "unit": "\u00b0",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T17:00:00Z"
+    },
+    "precipitation": {
+      "description": "Precipitazioni",
+      "value": 1.3876332931961521,
+      "unit": "mm",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T17:00:00Z"
+    }
+  }
+}
