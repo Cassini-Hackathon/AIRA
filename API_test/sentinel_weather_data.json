@@ -1,0 +1,675 @@
+{
+  "location": {
+    "latitude": 44.483619,
+    "longitude": 11.374042,
+    "name": "Bologna"
+  },
+  "timestamp": "2025-05-17 11:38:13",
+  "parameters": {
+    "temperature_2m": {
+      "description": "Temperatura a 2m",
+      "value": 24.460957511855458,
+      "unit": "\u00b0C",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T11:00:00Z"
+    },
+    "relative_humidity": {
+      "description": "Umidit\u00e0 relativa",
+      "value": 61.918118105839454,
+      "unit": "%",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T11:00:00Z"
+    },
+    "wind_speed": {
+      "description": "Velocit\u00e0 del vento",
+      "value": 6.1010845919519,
+      "unit": "km/h",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T11:00:00Z"
+    },
+    "wind_direction": {
+      "description": "Direzione del vento",
+      "value": 134.9774490507338,
+      "unit": "\u00b0",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T11:00:00Z"
+    },
+    "precipitation": {
+      "description": "Precipitazioni",
+      "value": 5.297025842870319,
+      "unit": "mm",
+      "source": "ERA5",
+      "acquisition_time": "2025-05-12T11:00:00Z"
+    },
+    "relativehumidity_2m": {
+      "description": "Relativehumidity 2M",
+      "hourly_values": [
+        {
+          "time": "00:00",
+          "value": 92,
+          "unit": "%"
+        },
+        {
+          "time": "01:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "02:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "03:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "04:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "05:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "06:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "07:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "08:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "09:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "10:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "11:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "12:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "13:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "14:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "15:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "16:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "17:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "18:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "19:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "20:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "21:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "22:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "23:00",
+          "value": null,
+          "unit": "%"
+        }
+      ],
+      "source": "Open-Meteo"
+    },
+    "surface_pressure": {
+      "description": "Surface Pressure",
+      "hourly_values": [
+        {
+          "time": "00:00",
+          "value": 1004.1,
+          "unit": "hPa"
+        },
+        {
+          "time": "01:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "02:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "03:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "04:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "05:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "06:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "07:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "08:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "09:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "10:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "11:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "12:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "13:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "14:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "15:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "16:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "17:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "18:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "19:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "20:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "21:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "22:00",
+          "value": null,
+          "unit": "hPa"
+        },
+        {
+          "time": "23:00",
+          "value": null,
+          "unit": "hPa"
+        }
+      ],
+      "source": "Open-Meteo"
+    },
+    "cloudcover": {
+      "description": "Cloudcover",
+      "hourly_values": [
+        {
+          "time": "00:00",
+          "value": 100,
+          "unit": "%"
+        },
+        {
+          "time": "01:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "02:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "03:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "04:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "05:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "06:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "07:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "08:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "09:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "10:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "11:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "12:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "13:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "14:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "15:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "16:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "17:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "18:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "19:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "20:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "21:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "22:00",
+          "value": null,
+          "unit": "%"
+        },
+        {
+          "time": "23:00",
+          "value": null,
+          "unit": "%"
+        }
+      ],
+      "source": "Open-Meteo"
+    },
+    "windspeed_10m": {
+      "description": "Windspeed 10M",
+      "hourly_values": [
+        {
+          "time": "00:00",
+          "value": 24.5,
+          "unit": "km/h"
+        },
+        {
+          "time": "01:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "02:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "03:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "04:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "05:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "06:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "07:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "08:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "09:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "10:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "11:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "12:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "13:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "14:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "15:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "16:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "17:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "18:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "19:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "20:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "21:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "22:00",
+          "value": null,
+          "unit": "km/h"
+        },
+        {
+          "time": "23:00",
+          "value": null,
+          "unit": "km/h"
+        }
+      ],
+      "source": "Open-Meteo"
+    },
+    "winddirection_10m": {
+      "description": "Winddirection 10M",
+      "hourly_values": [
+        {
+          "time": "00:00",
+          "value": 89,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "01:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "02:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "03:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "04:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "05:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "06:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "07:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "08:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "09:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "10:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "11:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "12:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "13:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "14:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "15:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "16:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "17:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "18:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "19:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "20:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "21:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "22:00",
+          "value": null,
+          "unit": "\u00b0"
+        },
+        {
+          "time": "23:00",
+          "value": null,
+          "unit": "\u00b0"
+        }
+      ],
+      "source": "Open-Meteo"
+    }
+  }
+}
