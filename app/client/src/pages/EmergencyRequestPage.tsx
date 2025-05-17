@@ -7,6 +7,7 @@ import AppHeader from "@/components/AppHeader";
 import MapComponent from "@/components/MapComponent";
 import { useToast } from "@/hooks/use-toast";
 import CameraCapture from "@/components/CameraCapture";
+import { AudioRecorder } from "@/components/AudioRecorder";
 
 const EmergencyRequestPage = () => {
   const { state } = useAppContext();
@@ -18,6 +19,10 @@ const EmergencyRequestPage = () => {
   const [emergencyType, setEmergencyType] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [victimCount, setVictimCount] = useState<string>("1");
+
+  const handleAudioRecorded = (audio: { base64: string; mimeType: string }) => {
+    console.log("Audio ricevuto:", audio);
+  };
 
   const emergencyMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -45,7 +50,7 @@ const EmergencyRequestPage = () => {
   });
 
   const handleSubmit = () => {
-    setLocation("/geo-map")
+    setLocation("/geo-map");
   };
 
   if (!userLocation) {
@@ -102,14 +107,29 @@ const EmergencyRequestPage = () => {
 
         {photo && (
           <div className="mt-6 text-center">
-            <p className="mb-2 font-medium">Immagine ricevuta dal figlio:</p>
+            <p className="mb-2 font-medium">Immagine della sitauzione</p>
             <img
               src={photo}
-              alt="Foto dal figlio"
+              alt="Foto"
               className="w-48 h-auto rounded-lg mx-auto"
             />
           </div>
         )}
+      </div>
+
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <AudioRecorder
+          onAudioRecorded={({ blob, url, mimeType }) => {
+            console.log("🎧 Audio blob:", blob);
+            console.log("📎 URL:", url);
+            console.log("🧾 MIME:", mimeType);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "registrazione.mp3";
+            link.click();
+          }}
+        />
       </div>
 
       <button
