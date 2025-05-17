@@ -1,0 +1,6 @@
+{
+  "audio_file": "audio/prova.mp3",
+  "transcription": " Ciao, questa è una prova per testare il modello whisper tiny.",
+  "processing_time_seconds": 20.81,
+  "timestamp": "2025-05-17T22:22:00.887566"
+}

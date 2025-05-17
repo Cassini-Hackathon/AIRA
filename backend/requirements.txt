@@ -1,6 +1,10 @@
 fastapi
 uvicorn
+python-multipart
 pydantic
+openai-whisper
+torch
+python-dotenv
 osmnx
 networkx
 geopandas
