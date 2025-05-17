@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 def get_location_coordinates(city):
     # Utilizzo di OpenStreetMap Nominatim per il geocoding
@@ -50,14 +51,19 @@ def get_nearby_defibrillators_and_medical_centers(city):
                              'address': m.get('tags', {}).get('addr:street', 'Non disponibile')} for m in medical_centers]
     }
     
-    # Salva i risultati in un file JSON
-    with open(f'{city}_results.json', 'w') as f:
+    # Crea la directory data se non esiste
+    data_dir = os.path.join('data')
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Salva i risultati in un file JSON nella directory API_test/data
+    file_path = os.path.join(data_dir, f'{city}_results.json')
+    with open(file_path, 'w') as f:
         json.dump(results, f, indent=4)
     
-    return f"Risultati salvati in {city}_results.json"
+    return f"Risultati salvati in {file_path}"
 
 # Esempio di utilizzo
 if __name__ == '__main__':
-    city = 'Bologna'  # HARDOCODED
+    city = 'Bologna'  # HARDOCDED
     results = get_nearby_defibrillators_and_medical_centers(city)
     print(results)
