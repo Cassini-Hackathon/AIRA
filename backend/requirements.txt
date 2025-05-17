@@ -1,3 +1,9 @@
 fastapi
 uvicorn
 pydantic
+osmnx
+networkx
+geopandas
+shapely
+json
+scikit-learn
