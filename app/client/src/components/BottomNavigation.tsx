@@ -52,7 +52,7 @@ const BottomNavigation = () => {
         onClick={() => setLocation("/maps")}
       >
         <span className="material-icons">map</span>
-        <span className="text-xs mt-1">Mappe</span>
+        <span className="text-xs mt-1">Mappa</span>
       </button>
 
       <button

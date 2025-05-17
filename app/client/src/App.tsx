@@ -25,7 +25,7 @@ import NotFound from "@/pages/not-found";
 import EmergencyRequestPage from "./pages/EmergencyRequestPage";
 import GeoMapScreen from "./pages/EmergencyCoordinationScreen";
 import EmergencyCoordinationScreen from "./pages/EmergencyCoordinationScreen";
-import { MapsPage } from "./pages/MapsPage";
+import MapsPage from "./pages/MapsPage";
 
 function Router() {
   const [user, setUser] = useState<User | null>(null);
