@@ -86,7 +86,7 @@ const HomePage = () => {
             {isLoading ? (
               <div className="flex-shrink-0 w-44 h-48 bg-white rounded-xl shadow-md animate-pulse"></div>
             ) : (
-              guides
+              mockGuides
                 ?.slice(0, 3)
                 .map((guide) => (
                   <GuideCard
@@ -101,13 +101,13 @@ const HomePage = () => {
       </div>
 
       {/* Weather & Environmental Section */}
-      {weatherData && location && (
+      {/* {weatherData && location && (
         <WeatherDisplay
           weatherData={weatherData}
           location={location}
           className="mb-6"
         />
-      )}
+      )} */}
     </div>
   );
 };
