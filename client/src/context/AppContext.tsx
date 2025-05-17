@@ -94,6 +94,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       try {
         // Utilizziamo Capacitor per ottenere la posizione
         const position = await CapacitorService.getCurrentPosition();
+        console.log('my pos', position)
         setLocation(position);
         console.log('Posizione ottenuta tramite Capacitor:', position);
       } catch (error) {

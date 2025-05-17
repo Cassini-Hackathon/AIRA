@@ -1,13 +1,15 @@
-import { WeatherData } from '@/lib/types';
+import { WeatherData, Location } from '@/lib/types';
 
 interface WeatherDisplayProps {
   weatherData: WeatherData;
+  location: Location;
   showDetails?: boolean;
   className?: string;
 }
 
-const WeatherDisplay = ({ weatherData, showDetails = true, className = '' }: WeatherDisplayProps) => {
+const WeatherDisplay = ({ weatherData, location, showDetails = true, className = '' }: WeatherDisplayProps) => {
   if (!weatherData) return null;
+  if (!location) return null
 
   return (
     <div className={`bg-white rounded-2xl shadow-lg p-4 ${className}`}>
@@ -29,7 +31,7 @@ const WeatherDisplay = ({ weatherData, showDetails = true, className = '' }: Wea
           <p className="font-medium">Milano, IT</p>
           <div className="flex items-center justify-end text-sm text-gray-600">
             <span className="material-icons text-sm mr-1">location_on</span>
-            <span>45.4642, 9.1900</span>
+            <span>{`${location.latitude}, ${location.longitude}`}</span>
           </div>
         </div>
       </div>
