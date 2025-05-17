@@ -14,7 +14,6 @@ import BottomNavigation from '@/components/BottomNavigation';
 
 // Import pages
 import HomePage from '@/pages/HomePage';
-import EmergencyRequestPage from '@/pages/EmergencyRequestPage';
 import DroneKitPage from '@/pages/DroneKitPage';
 import FirstAidGuidePage from '@/pages/FirstAidGuidePage';
 import GuideDetailPage from '@/pages/GuideDetailPage';
@@ -23,6 +22,8 @@ import ProfilePage from '@/pages/ProfilePage';
 import AdminPanelPage from '@/pages/AdminPanelPage';
 import LoginPage from '@/pages/LoginPage';
 import NotFound from '@/pages/not-found';
+import EmergencyRequestPage from './pages/EmergencyRequestPage';
+import GeoMapScreen from './pages/GeoMapScreen';
 
 function Router() {
   const [user, setUser] = useState<User | null>(null);
@@ -57,6 +58,8 @@ function Router() {
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/emergency" component={EmergencyRequestPage} />
+          {/* <Route path="/emergency-coordination" component={EmergencyCoordination} /> */}
+          <Route path="/geo-map" component={GeoMapScreen} />
           <Route path="/drone-kit" component={DroneKitPage} />
           <Route path="/guides" component={FirstAidGuidePage} />
           <Route path="/guides/:id" component={GuideDetailPage} />
