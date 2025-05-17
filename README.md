@@ -1,3 +1,14 @@
+# SETUP
+creazione ambiente virtuale python:
+- python -m venv "nome_venv"
+- cd nome_venv
+- Scripts\activate
+- cd "your_project"
+- git clone "https...."
+- cd AIRA
+- cd backend
+- pip install -r requirements.txt
+
 # AIRA+ - Guida al Progetto
 
 AIRA+ (Advanced Integrated Response & Aid Assistant) è una piattaforma mobile-first con funzionalità offline progettata per aiutare i cittadini a fornire primo soccorso in aree critiche. L'applicazione coordina la consegna intelligente di medicinali o kit di primo soccorso tramite droni, supportata da dati spaziali e intelligenza artificiale.
