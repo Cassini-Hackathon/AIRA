@@ -85,3 +85,7 @@ async def map_routing(start_coordinates: Coordinates, end_coordinates: Coordinat
     route = nx.shortest_path(map, orig_node, dest_node, weight='custom_weight')
 
     return route_to_geojson(map, route)
+
+@router.get("/test")
+async def test_cors():
+    return {"message": "CORS is working!"}
