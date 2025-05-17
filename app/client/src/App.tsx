@@ -26,6 +26,7 @@ import EmergencyRequestPage from "./pages/EmergencyRequestPage";
 import GeoMapScreen from "./pages/EmergencyCoordinationScreen";
 import EmergencyCoordinationScreen from "./pages/EmergencyCoordinationScreen";
 import MapsPage from "./pages/MapsPage";
+import AdminPanelPage2 from "./pages/AdminPanelPage2";
 
 function Router() {
   const [user, setUser] = useState<User | null>(null);
@@ -75,7 +76,6 @@ function Router() {
           <Route path="/weather" component={WeatherPage} />
           <Route path="/maps" component={MapsPage} />
           <Route path="/profile" component={ProfilePage} />
-          <Route path="/admin" component={AdminPanelPage} />
           <Route path="/login" component={LoginPage} />
           <Route component={NotFound} />
         </Switch>
