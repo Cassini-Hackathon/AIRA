@@ -1,9 +1,14 @@
 import os
 import sys
 import tempfile
-from fastapi import APIRouter, HTTPException, Query, UploadFile, File
+import base64
+from fastapi import APIRouter, HTTPException, Query, UploadFile, File, Body
 from pydantic import BaseModel
 from typing import Optional
+import io
+import numpy as np
+from fastapi import Request
+import json
 
 # Aggiungi la directory dei modelli al path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../ai_models/src')))
@@ -42,37 +47,61 @@ class TranscriptionResponse(BaseModel):
     text: str
     error: Optional[str] = None
 
+class TranscriptionRequest(BaseModel):
+    file_base64: str
+
 @router.get("/transcribe", response_model=TranscriptionResponse)
-async def transcribe_audio(file_path: Optional[str] = None):
+async def transcribe_audio(file_path: Optional[str] = None, file_base64: Optional[str] = None):
     """
     Trascrive un file audio.
     
     Args:
         file_path (str, optional): Percorso del file audio da trascrivere.
             Se non specificato, viene utilizzato un file predefinito.
+        file_base64 (str, optional): Contenuto del file audio codificato in base64.
+            Se specificato, ha precedenza su file_path.
     
     Returns:
         TranscriptionResponse: Un oggetto contenente la trascrizione del testo o un messaggio di errore.
     """
-    if file_path is None:
-        # Usando un file predefinito se non viene fornito un percorso
-        # Questo è il percorso hardcoded che viene usato come fallback
-        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../ai_models/audio/prova-real.m4a'))
-    
-    # Verifica che il percorso esista
-    if not os.path.exists(file_path):
-        return TranscriptionResponse(
-            text="", 
-            error=f"File non trovato: {file_path}"
-        )
-    
-    if not model:
-        return TranscriptionResponse(
-            text="", 
-            error="Modello non caricato correttamente. Controlla i log del server."
-        )
+    temp_file_path = None
     
     try:
+        if file_base64:
+            print("Elaborazione file base64...")
+            # Decodifica il file base64 e salvalo come file temporaneo
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
+                    temp_file_path = temp_file.name
+                    audio_content = base64.b64decode(file_base64)
+                    temp_file.write(audio_content)
+                
+                file_path = temp_file_path
+                print(f"File base64 salvato temporaneamente in: {file_path}")
+            except Exception as decode_error:
+                return TranscriptionResponse(
+                    text="", 
+                    error=f"Errore nella decodifica del file base64: {str(decode_error)}"
+                )
+        elif file_path is None:
+            # Usando un file predefinito se non viene fornito un percorso
+            # Questo è il percorso hardcoded che viene usato come fallback
+            file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../ai_models/audio/prova.mp3'))
+            print(f"Utilizzo file predefinito: {file_path}")
+        
+        # Verifica che il percorso esista
+        if not os.path.exists(file_path):
+            return TranscriptionResponse(
+                text="", 
+                error=f"File non trovato: {file_path}"
+            )
+        
+        if not model:
+            return TranscriptionResponse(
+                text="", 
+                error="Modello non caricato correttamente. Controlla i log del server."
+            )
+        
         print(f"Trascrizione di: {file_path}")
         # Trascrivi l'audio
         result = model.transcribe(
@@ -88,6 +117,15 @@ async def transcribe_audio(file_path: Optional[str] = None):
             text="", 
             error=f"Errore durante la trascrizione: {str(e)}"
         )
+    finally:
+        # Pulisci il file temporaneo se esiste
+        if temp_file_path and os.path.exists(temp_file_path):
+            try:
+                os.unlink(temp_file_path)
+                print(f"File temporaneo rimosso: {temp_file_path}")
+            except Exception as clean_error:
+                print(f"Errore nella pulizia del file temporaneo: {str(clean_error)}")
+                pass
 
 @router.post("/transcribe-upload", response_model=TranscriptionResponse)
 async def transcribe_uploaded_audio(audio_file: UploadFile = File(...)):
@@ -141,6 +179,66 @@ async def transcribe_uploaded_audio(audio_file: UploadFile = File(...)):
         if 'temp_file_path' in locals() and os.path.exists(temp_file_path):
             os.unlink(temp_file_path)
         
+        return TranscriptionResponse(
+            text="", 
+            error=f"Errore durante la trascrizione: {str(e)}"
+        )
+
+@router.post("/transcribe", response_model=TranscriptionResponse)
+async def transcribe_audio_base64(request: TranscriptionRequest):
+    """
+    Trascrive un file audio inviato come base64.
+    
+    Args:
+        request: Richiesta contenente il file audio in formato base64.
+    
+    Returns:
+        TranscriptionResponse: Un oggetto contenente la trascrizione del testo o un messaggio di errore.
+    """
+    try:
+        print("Ricevuto file base64 per trascrizione diretta")
+        
+        if not model:
+            return TranscriptionResponse(
+                text="", 
+                error="Modello non caricato correttamente. Controlla i log del server."
+            )
+        
+        # Decodifica il file base64
+        try:
+            audio_bytes = base64.b64decode(request.file_base64)
+            print(f"File base64 decodificato, dimensione: {len(audio_bytes)} bytes")
+            
+            # Salva temporaneamente i dati come file (necessario per Whisper)
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
+                temp_file_path = temp_file.name
+                temp_file.write(audio_bytes)
+            
+            print(f"Trascrizione diretta da file temporaneo: {temp_file_path}")
+            
+            # Trascrivi l'audio usando il modello
+            result = model.transcribe(
+                temp_file_path,
+                fp16=torch.cuda.is_available(),
+                beam_size=5
+            )
+            
+            # Pulisci il file temporaneo
+            try:
+                os.unlink(temp_file_path)
+                print(f"File temporaneo rimosso: {temp_file_path}")
+            except Exception as clean_error:
+                print(f"Errore nella pulizia del file temporaneo: {str(clean_error)}")
+            
+            return TranscriptionResponse(text=result["text"])
+            
+        except Exception as decode_error:
+            return TranscriptionResponse(
+                text="", 
+                error=f"Errore nella decodifica o elaborazione del file base64: {str(decode_error)}"
+            )
+            
+    except Exception as e:
         return TranscriptionResponse(
             text="", 
             error=f"Errore durante la trascrizione: {str(e)}"
