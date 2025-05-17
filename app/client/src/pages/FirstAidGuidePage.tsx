@@ -20,7 +20,8 @@ const FirstAidGuidePage = () => {
     initialData: isOffline ? mockGuides : undefined
   });
 
-  const filteredGuides = guides?.filter(guide => {
+  const filteredGuides = mockGuides?.filter(guide => {
+  // const filteredGuides = guides?.filter(guide => {
     const matchesSearch = searchQuery === '' || 
       guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       guide.content.description.toLowerCase().includes(searchQuery.toLowerCase());

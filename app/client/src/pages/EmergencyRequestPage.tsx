@@ -1,73 +1,51 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useLocation } from 'wouter';
-import { useAppContext } from '@/context/AppContext';
-import { apiRequest } from '@/lib/queryClient';
-import AppHeader from '@/components/AppHeader';
-import MapComponent from '@/components/MapComponent';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useLocation } from "wouter";
+import { useAppContext } from "@/context/AppContext";
+import { apiRequest } from "@/lib/queryClient";
+import AppHeader from "@/components/AppHeader";
+import MapComponent from "@/components/MapComponent";
+import { useToast } from "@/hooks/use-toast";
+import CameraCapture from "@/components/CameraCapture";
 
 const EmergencyRequestPage = () => {
   const { state } = useAppContext();
   const { location: userLocation } = state;
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  
-  const [emergencyType, setEmergencyType] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [victimCount, setVictimCount] = useState<string>('1');
+
+  const [photo, setPhoto] = useState<string>();
+  const [emergencyType, setEmergencyType] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [victimCount, setVictimCount] = useState<string>("1");
 
   const emergencyMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await apiRequest('POST', '/api/emergency', data);
+      const response = await apiRequest("POST", "/api/emergency", data);
       return response.json();
     },
     onSuccess: () => {
       toast({
         title: "Richiesta inviata",
-        description: "La tua richiesta di soccorso è stata inviata con successo.",
-        variant: "success"
+        description:
+          "La tua richiesta di soccorso è stata inviata con successo.",
+        variant: "success",
       });
-      setLocation('/');
+      setLocation("/");
     },
     onError: (error) => {
       toast({
         title: "Errore",
-        description: "Si è verificato un errore nell'invio della richiesta. Riprova.",
-        variant: "destructive"
+        description:
+          "Si è verificato un errore nell'invio della richiesta. Riprova.",
+        variant: "destructive",
       });
       console.error("Error submitting emergency request:", error);
-    }
+    },
   });
 
   const handleSubmit = () => {
-    if (!userLocation) {
-      toast({
-        title: "Errore",
-        description: "Impossibile determinare la tua posizione. Riprova.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (!emergencyType) {
-      toast({
-        title: "Tipo di emergenza richiesto",
-        description: "Seleziona il tipo di emergenza prima di procedere.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const data = {
-      type: emergencyType,
-      description,
-      victimCount,
-      location: userLocation,
-      status: 'pending'
-    };
-
-    emergencyMutation.mutate(data);
+    setLocation("/geo-map")
   };
 
   if (!userLocation) {
@@ -83,93 +61,58 @@ const EmergencyRequestPage = () => {
 
   return (
     <div className="px-4 py-6 pb-20">
-      <AppHeader title="Richiesta Soccorso" showBackButton showProfile={false} showWeather={false} />
-      
-      <div className="bg-white rounded-2xl shadow-lg p-4 mb-6">
-        <h2 className="text-xl font-bold mb-4">La tua posizione</h2>
-        
-        <MapComponent location={userLocation} />
-        
-        <div className="mb-4">
-          <p className="font-medium">Indirizzo rilevato:</p>
-          <p className="text-gray-700">{userLocation.address || 'Indirizzo non disponibile'}</p>
-        </div>
-        
-        <div className="flex items-center mb-4">
-          <span className="material-icons text-success mr-2">check_circle</span>
-          <p className="text-gray-700">GPS attivo e funzionante</p>
-        </div>
-        
-        <button className="w-full bg-gray-200 text-dark font-medium py-2 px-4 rounded-lg flex items-center justify-center">
-          <span className="material-icons mr-2">edit_location</span>
-          Modifica posizione
-        </button>
-      </div>
+      <AppHeader
+        title="Richiesta Soccorso"
+        showBackButton
+        showProfile={false}
+        showWeather={false}
+      />
 
       <div className="bg-white rounded-2xl shadow-lg p-4 mb-6">
-        <h2 className="text-xl font-bold mb-4">Tipo di emergenza</h2>
-        
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <button 
-            className={`${emergencyType === 'medical' ? 'bg-gray-200' : 'bg-gray-100'} hover:bg-gray-200 text-dark rounded-xl py-3 px-4 flex flex-col items-center`}
-            onClick={() => setEmergencyType('medical')}
-          >
-            <span className="material-icons text-emergency mb-2">medical_services</span>
-            <span className="font-medium">Medica</span>
-          </button>
-          <button 
-            className={`${emergencyType === 'fire' ? 'bg-gray-200' : 'bg-gray-100'} hover:bg-gray-200 text-dark rounded-xl py-3 px-4 flex flex-col items-center`}
-            onClick={() => setEmergencyType('fire')}
-          >
-            <span className="material-icons text-emergency mb-2">local_fire_department</span>
-            <span className="font-medium">Incendio</span>
-          </button>
-          <button 
-            className={`${emergencyType === 'accident' ? 'bg-gray-200' : 'bg-gray-100'} hover:bg-gray-200 text-dark rounded-xl py-3 px-4 flex flex-col items-center`}
-            onClick={() => setEmergencyType('accident')}
-          >
-            <span className="material-icons text-emergency mb-2">car_crash</span>
-            <span className="font-medium">Incidente</span>
-          </button>
-          <button 
-            className={`${emergencyType === 'other' ? 'bg-gray-200' : 'bg-gray-100'} hover:bg-gray-200 text-dark rounded-xl py-3 px-4 flex flex-col items-center`}
-            onClick={() => setEmergencyType('other')}
-          >
-            <span className="material-icons text-emergency mb-2">more_horiz</span>
-            <span className="font-medium">Altro</span>
-          </button>
-        </div>
-        
-        <div className="mb-4">
-          <label htmlFor="emergency-description" className="block font-medium mb-2">Descrivi l'emergenza</label>
-          <textarea 
-            id="emergency-description" 
-            rows={3} 
-            className="w-full border border-gray-300 rounded-lg p-3" 
-            placeholder="Fornisci più dettagli possibili..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </div>
-        
-        <div className="mb-4">
-          <label htmlFor="victim-count" className="block font-medium mb-2">Numero di persone coinvolte</label>
-          <select 
-            id="victim-count" 
-            className="w-full border border-gray-300 rounded-lg p-3 bg-white"
-            value={victimCount}
-            onChange={(e) => setVictimCount(e.target.value)}
-          >
-            <option value="1">1 persona</option>
-            <option value="2">2 persone</option>
-            <option value="3">3 persone</option>
-            <option value="4+">4 o più persone</option>
-            <option value="unknown">Non so</option>
-          </select>
-        </div>
+        <h2 className="text-xl font-bold mb-4">
+          La tua posizione {userLocation.longitude}, {userLocation.latitude}
+        </h2>
       </div>
-      
-      <button 
+
+      {/* Tipo di emergenza */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">
+          Tipo di emergenza
+        </label>
+        <select
+          className="w-full p-3 bg-darkSurface border border-medicalPrimary/30 rounded-lg"
+          value={emergencyType}
+          onChange={(e) => setEmergencyType(e.target.value)}
+        >
+          <option value="">Seleziona tipo...</option>
+          <option value="trauma">Trauma/Ferita</option>
+          <option value="cardiac">Problema cardiaco</option>
+          <option value="breathing">Difficoltà respiratorie</option>
+          <option value="unconscious">Persona incosciente</option>
+          <option value="burn">Ustione</option>
+          <option value="other">Altro</option>
+        </select>
+      </div>
+
+      <div className="md-4">
+        <label className="block text-sm font-medium mb-2">
+          Foto della situazione
+        </label>
+        <CameraCapture onPhotoTaken={(img) => setPhoto(img)} />
+
+        {photo && (
+          <div className="mt-6 text-center">
+            <p className="mb-2 font-medium">Immagine ricevuta dal figlio:</p>
+            <img
+              src={photo}
+              alt="Foto dal figlio"
+              className="w-48 h-auto rounded-lg mx-auto"
+            />
+          </div>
+        )}
+      </div>
+
+      <button
         onClick={handleSubmit}
         disabled={emergencyMutation.isPending || !emergencyType}
         className="w-full bg-emergency text-white font-bold py-4 px-6 rounded-xl text-lg flex items-center justify-center shadow-md mb-4 disabled:opacity-50"
@@ -181,9 +124,11 @@ const EmergencyRequestPage = () => {
         )}
         Invia Richiesta di Soccorso
       </button>
-      
+
       <p className="text-center text-sm text-gray-500">
-        Premendo "Invia" accetti di condividere la tua posizione con i servizi di emergenza e confermi che le informazioni fornite sono accurate al meglio delle tue conoscenze.
+        Premendo "Invia" accetti di condividere la tua posizione con i servizi
+        di emergenza e confermi che le informazioni fornite sono accurate al
+        meglio delle tue conoscenze.
       </p>
     </div>
   );
