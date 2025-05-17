@@ -75,14 +75,14 @@ async def map_routing(start_coordinates: Coordinates, end_coordinates: Coordinat
 
     # Use only the length of the road as weight
     print(f"Chosen map: {map_data['name']}")
-    for u, v, k, data in map.edges(keys=True, data=True):
-    # Get the length and use it directly as the weight without modifications
-        data['custom_weight'] = data.get('length', 1)
+    # for u, v, k, data in map.edges(keys=True, data=True):
+    # # Get the length and use it directly as the weight without modifications
+    #     data['custom_weight'] = data.get('length', 1)
 
     # Calculate route with the custom weight (which is just the length)
     orig_node = ox.nearest_nodes(map, start_coordinates.longitude, start_coordinates.latitude)
     dest_node = ox.nearest_nodes(map, end_coordinates.longitude, end_coordinates.latitude)
-    route = nx.shortest_path(map, orig_node, dest_node, weight='custom_weight')
+    route = nx.shortest_path(map, orig_node, dest_node, weight='length')
 
     return route_to_geojson(map, route)
 
