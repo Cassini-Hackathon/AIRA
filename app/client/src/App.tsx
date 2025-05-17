@@ -23,7 +23,8 @@ import AdminPanelPage from '@/pages/AdminPanelPage';
 import LoginPage from '@/pages/LoginPage';
 import NotFound from '@/pages/not-found';
 import EmergencyRequestPage from './pages/EmergencyRequestPage';
-import GeoMapScreen from './pages/GeoMapScreen';
+import GeoMapScreen from './pages/EmergencyCoordinationScreen';
+import EmergencyCoordinationScreen from './pages/EmergencyCoordinationScreen';
 
 function Router() {
   const [user, setUser] = useState<User | null>(null);
@@ -58,7 +59,7 @@ function Router() {
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/emergency" component={EmergencyRequestPage} />
-          {/* <Route path="/emergency-coordination" component={EmergencyCoordination} /> */}
+          <Route path="/emergency-coordination" component={EmergencyCoordinationScreen} />
           <Route path="/geo-map" component={GeoMapScreen} />
           <Route path="/drone-kit" component={DroneKitPage} />
           <Route path="/guides" component={FirstAidGuidePage} />

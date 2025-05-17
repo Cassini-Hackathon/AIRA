@@ -1,10 +1,12 @@
-import React from 'react';
-import { MapContainer, TileLayer, GeoJSON, Popup } from 'react-leaflet';
-import type { Feature, FeatureCollection } from 'geojson';
-import 'leaflet/dist/leaflet.css';
+import React, { useEffect } from "react";
+import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import type { Feature, FeatureCollection } from "geojson";
+import type { LatLngBounds } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 type GeoMapProps = {
   geoJsonData: FeatureCollection;
+  bounds?: LatLngBounds | null;
 };
 
 const onEachFeature = (feature: Feature, layer: L.Layer) => {
@@ -13,12 +15,25 @@ const onEachFeature = (feature: Feature, layer: L.Layer) => {
   }
 };
 
-const GeoMap: React.FC<GeoMapProps> = ({ geoJsonData }) => {
+const SetBounds: React.FC<{ bounds: LatLngBounds | null | undefined }> = ({
+  bounds,
+}) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (bounds) {
+      map.fitBounds(bounds);
+    }
+  }, [bounds, map]);
+
+  return null;
+};
+
+const GeoMap: React.FC<GeoMapProps> = ({ geoJsonData, bounds }) => {
   return (
     <MapContainer
-      center={[45.4642, 9.19]}
       zoom={10}
-      style={{ height: '100%', width: '100%', borderRadius: '1rem' }}
+      style={{ height: "100%", width: "100%", borderRadius: "1rem" }}
       scrollWheelZoom={true}
     >
       <TileLayer
@@ -26,6 +41,7 @@ const GeoMap: React.FC<GeoMapProps> = ({ geoJsonData }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <GeoJSON data={geoJsonData} onEachFeature={onEachFeature} />
+      <SetBounds bounds={bounds} />
     </MapContainer>
   );
 };

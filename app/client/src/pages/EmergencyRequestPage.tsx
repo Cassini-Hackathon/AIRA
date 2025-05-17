@@ -45,36 +45,7 @@ const EmergencyRequestPage = () => {
   });
 
   const handleSubmit = () => {
-    console.log('vado su geomap')
     setLocation("/geo-map")
-
-    if (!userLocation) {
-      toast({
-        title: "Errore",
-        description: "Impossibile determinare la tua posizione. Riprova.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!emergencyType) {
-      toast({
-        title: "Tipo di emergenza richiesto",
-        description: "Seleziona il tipo di emergenza prima di procedere.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const data = {
-      type: emergencyType,
-      description,
-      victimCount,
-      location: userLocation,
-      status: "pending",
-    };
-
-    emergencyMutation.mutate(data);
   };
 
   if (!userLocation) {
@@ -101,13 +72,6 @@ const EmergencyRequestPage = () => {
         <h2 className="text-xl font-bold mb-4">
           La tua posizione {userLocation.longitude}, {userLocation.latitude}
         </h2>
-
-        {/* <div className="mb-4">
-          <p className="font-medium">Indirizzo rilevato:</p>
-          <p className="text-gray-700">
-            {userLocation.address || "Indirizzo non disponibile"}
-          </p>
-        </div> */}
       </div>
 
       {/* Tipo di emergenza */}
