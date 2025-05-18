@@ -51,12 +51,14 @@ const HomePage = () => {
         </button>
       </div> */}
 
-      <div className="rounded-2xl p-6 mb-6 flex flex-col items-center">
-        {/* <h2 className="text-xl font-bold mb-4 text-center">Emergenza</h2> */}
+      <div className="relative w-[280px] h-[280px] flex items-center justify-center mb-6 m-auto">
+        {/* Alone animato */}
+        <div className="absolute inset-0 rounded-full bg-red-500 opacity-30 animate-ping scale-105"></div>
 
+        {/* Pulsante */}
         <button
           onClick={handleEmergencyRequest}
-          className="w-[280px] h-[280px] max-w-full bg-emergency text-white rounded-full shadow-xl flex items-center justify-center text-2xl font-extrabold text-center hover:bg-red-600 active:bg-red-700 active:scale-95 transition-all duration-200"
+          className="relative w-[280px] h-[280px] max-w-full bg-emergency text-white rounded-full shadow-xl flex items-center justify-center text-2xl font-extrabold text-center hover:bg-red-600 active:bg-red-700 active:scale-95 transition-all duration-200"
           aria-label="Richiedi soccorso immediato"
         >
           RICHIEDI

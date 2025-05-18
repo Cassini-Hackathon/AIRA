@@ -21,7 +21,8 @@ export async function getAmbulancePath(
 ): Promise<{ geoJson: FeatureCollection; bounds: L.LatLngBounds } | null> {
   try {
     const response = await axios.post<FeatureCollection>(
-      "http://127.0.0.1:8000/routing/",
+      // "http://127.0.0.1:8000/routing/",
+      "https://aira-deploy.onrender.com/routing/",
       {
         start_coordinates: {
           latitude: startLat,
