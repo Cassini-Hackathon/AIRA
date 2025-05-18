@@ -1,8 +1,20 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { AppContextState, Location, WeatherData } from '@/lib/types';
-import { mockLocation, mockWeatherData } from '@/lib/mocks';
-import { apiRequest } from '@/lib/queryClient';
-import CapacitorService from '@/lib/capacitor';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import {
+  AmbulanceData,
+  AppContextState,
+  Location,
+  WeatherData,
+} from "@/lib/types";
+import { mockLocation, mockWeatherData } from "@/lib/mocks";
+import { apiRequest } from "@/lib/queryClient";
+import CapacitorService from "@/lib/capacitor";
+import { getAmbulancePath } from "@/lib/geolocationAssistance";
 
 // Definisco il tipo per il contesto
 type AppContextType = {
@@ -18,41 +30,47 @@ const AppContext = createContext<AppContextType>({
   state: {
     isOffline: false,
     location: null,
-    weatherData: null
+    weatherData: null,
+    ambulance: null,
   },
   setIsOffline: () => {},
   setLocation: () => {},
   setWeatherData: () => {},
-  refreshLocation: async () => {}
+  refreshLocation: async () => {},
 });
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<AppContextState>({
     isOffline: false,
     location: null,
-    weatherData: null
+    weatherData: null,
+    ambulance: null,
   });
 
   // Methods to update state
   const setIsOffline = (isOffline: boolean) => {
-    setState(prevState => ({ ...prevState, isOffline }));
+    setState((prevState) => ({ ...prevState, isOffline }));
   };
 
   const setLocation = (location: Location | null) => {
-    setState(prevState => ({ ...prevState, location }));
+    setState((prevState) => ({ ...prevState, location }));
   };
 
   const setWeatherData = (weatherData: WeatherData | null) => {
-    setState(prevState => ({ ...prevState, weatherData }));
+    setState((prevState) => ({ ...prevState, weatherData }));
   };
-  
+
+  const setAmbulanceData = (ambulance: AmbulanceData | null) => {
+    setState((prevState) => ({ ...prevState, ambulance }));
+  };
+
   // Funzione per aggiornare la posizione dell'utente tramite Capacitor
   const refreshLocation = async () => {
     try {
       const position = await CapacitorService.getCurrentPosition();
       setLocation(position);
     } catch (error) {
-      console.error('Errore durante l\'aggiornamento della posizione:', error);
+      console.error("Errore durante l'aggiornamento della posizione:", error);
     }
   };
 
@@ -64,7 +82,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const isConnected = await CapacitorService.checkNetworkStatus();
         setIsOffline(!isConnected);
       } catch (error) {
-        console.error('Errore durante il controllo dello stato della rete:', error);
+        console.error(
+          "Errore durante il controllo dello stato della rete:",
+          error
+        );
         // Fallback a navigator.onLine
         setIsOffline(!navigator.onLine);
       }
@@ -75,7 +96,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     // Aggiungiamo un listener per i cambiamenti dello stato della rete
     const cleanup = CapacitorService.addNetworkStatusListener((isConnected) => {
-      console.log('Stato rete cambiato, connesso:', isConnected);
+      console.log("Stato rete cambiato, connesso:", isConnected);
       setIsOffline(!isConnected);
     });
 
@@ -96,7 +117,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         const position = await CapacitorService.getCurrentPosition();
         setLocation(position);
       } catch (error) {
-        console.error('Errore durante l\'acquisizione della posizione:', error);
+        console.error("Errore durante l'acquisizione della posizione:", error);
         // In caso di errore, utilizzare i dati di mock come fallback
         setLocation(mockLocation);
       }
@@ -104,6 +125,33 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     getUserLocation();
   }, []);
+
+  useEffect(() => {
+    const fetchAmbPath = async () => {
+      if (!state.location) return;
+
+      const result = await getAmbulancePath(
+        44.491799,
+        11.356466,
+        state.location.latitude,
+        state.location.longitude
+      );
+
+      if (result) {
+        setAmbulanceData({
+          path: result.geoJson,
+          bounds: result.bounds,
+        });
+      } else {
+        setAmbulanceData({
+          path: null,
+          bounds: null,
+        });
+      }
+    };
+
+    fetchAmbPath();
+  }, [state.location]);
 
   // Get weather data based on location
   useEffect(() => {
@@ -118,11 +166,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // In a real app, we would fetch this from a weather API
-        const response = await apiRequest('POST', '/api/weather', state.location);
+        const response = await apiRequest(
+          "POST",
+          "/api/weather",
+          state.location
+        );
         const data = await response.json();
         setWeatherData(data);
       } catch (error) {
-        console.error('Error fetching weather data:', error);
+        console.error("Error fetching weather data:", error);
         // Fallback to mock data
         setWeatherData(mockWeatherData);
       }
@@ -132,7 +184,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, [state.location, state.isOffline]);
 
   return (
-    <AppContext.Provider value={{ state, setIsOffline, setLocation, setWeatherData, refreshLocation }}>
+    <AppContext.Provider
+      value={{
+        state,
+        setIsOffline,
+        setLocation,
+        setWeatherData,
+        refreshLocation,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

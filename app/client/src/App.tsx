@@ -27,6 +27,7 @@ import GeoMapScreen from "./pages/EmergencyCoordinationScreen";
 import EmergencyCoordinationScreen from "./pages/EmergencyCoordinationScreen";
 import MapsPage from "./pages/MapsPage";
 import AdminPanelPage2 from "./pages/AdminPanelPage2";
+import EmeCoord2 from "./pages/EmeCoord2";
 
 function Router() {
   const [user, setUser] = useState<User | null>(null);
@@ -69,6 +70,7 @@ function Router() {
             path="/emergency-coordination"
             component={EmergencyCoordinationScreen}
           />
+          <Route path="/eme-cord-2" component={EmeCoord2} />
           <Route path="/geo-map" component={GeoMapScreen} />
           <Route path="/drone-kit" component={DroneKitPage} />
           <Route path="/guides" component={FirstAidGuidePage} />

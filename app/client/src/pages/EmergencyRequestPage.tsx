@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useLocation } from "wouter";
-import { useAppContext } from "@/context/AppContext";
-import { apiRequest } from "@/lib/queryClient";
 import AppHeader from "@/components/AppHeader";
-import MapComponent from "@/components/MapComponent";
-import { useToast } from "@/hooks/use-toast";
-import CameraCapture from "@/components/CameraCapture";
 import { AudioRecorder } from "@/components/AudioRecorder";
+import CameraCapture from "@/components/CameraCapture";
+import { useAppContext } from "@/context/AppContext";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { useLocation } from "wouter";
 
 const EmergencyRequestPage = () => {
   const { state } = useAppContext();
@@ -22,6 +21,12 @@ const EmergencyRequestPage = () => {
 
   const handleAudioRecorded = (audio: { base64: string; mimeType: string }) => {
     console.log("Audio ricevuto:", audio);
+  };
+
+  const handleCancelEmergency = () => {
+    if (confirm("Sei sicuro di voler annullare la richiesta di emergenza?")) {
+      setLocation("/");
+    }
   };
 
   const emergencyMutation = useMutation({
@@ -51,6 +56,7 @@ const EmergencyRequestPage = () => {
 
   const handleSubmit = () => {
     setLocation("/geo-map");
+    // setLocation("/eme-cord-2");
   };
 
   if (!userLocation) {
@@ -117,7 +123,10 @@ const EmergencyRequestPage = () => {
         )}
       </div>
 
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <label className="block text-sm font-medium mb-2">
+        Registra l'accaduto
+      </label>
+      <div className="flex items-center justify-center p-4">
         <AudioRecorder
           onAudioRecorded={({ blob, url, mimeType }) => {
             console.log("🎧 Audio blob:", blob);
@@ -144,12 +153,6 @@ const EmergencyRequestPage = () => {
         )}
         Invia Richiesta di Soccorso
       </button>
-
-      <p className="text-center text-sm text-gray-500">
-        Premendo "Invia" accetti di condividere la tua posizione con i servizi
-        di emergenza e confermi che le informazioni fornite sono accurate al
-        meglio delle tue conoscenze.
-      </p>
     </div>
   );
 };

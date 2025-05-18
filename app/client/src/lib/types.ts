@@ -1,4 +1,5 @@
-// Type definitions for the application
+import type { FeatureCollection } from "geojson";
+import type { LatLngBounds } from "leaflet";
 
 export interface User {
   id: number;
@@ -35,17 +36,17 @@ export interface EmergencyRequest {
   description?: string;
   victimCount?: string;
   location: Location;
-  status: 'pending' | 'active' | 'completed';
+  status: "pending" | "active" | "completed";
   createdAt: Date;
 }
 
 export interface DroneDelivery {
   id: number;
   userId?: number;
-  kitType: 'basic' | 'advanced' | 'specialized';
+  kitType: "basic" | "advanced" | "specialized";
   notes?: string;
   location: Location;
-  status: 'pending' | 'preparing' | 'in-flight' | 'delivered';
+  status: "pending" | "preparing" | "in-flight" | "delivered";
   estimatedArrival?: Date;
   droneId?: string;
   createdAt: Date;
@@ -108,8 +109,14 @@ export interface WeatherData {
   forecast: WeatherForecast[];
 }
 
+export interface AmbulanceData {
+  path: FeatureCollection | null | undefined;
+  bounds: LatLngBounds | null;
+}
+
 export interface AppContextState {
   isOffline: boolean;
   location: Location | null;
   weatherData: WeatherData | null;
+  ambulance: AmbulanceData | null;
 }

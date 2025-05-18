@@ -1,55 +1,50 @@
-import React, { useEffect, useState } from "react";
+import AppHeader from "@/components/AppHeader";
 import GeoMap from "@/components/GeoMap";
 import { useAppContext } from "@/context/AppContext";
-import { getAmbulancePath } from "@/lib/geolocationAssistance";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "wouter";
 
-import type { FeatureCollection } from "geojson";
-import type { LatLngBounds } from "leaflet";
-import AppHeader from "@/components/AppHeader";
+const steps = [
+  { label: "ETA: 12 minuti", icon: "🚑" },
+  { label: "Consegna medicinali - ETA drone: 4 minuti", icon: "🚁" },
+  {
+    label:
+      "Medicinali in arrivo: \n     • Aspirina 325mg\n• Antitrombotico preventivo\n• Nitroglicerina sublinguale\n• Kit emergenza cardiaca",
+    icon: "💊",
+  },
+];
 
 const EmergencyCoordinationScreen = () => {
+  const [, setLocation] = useLocation();
   const { state } = useAppContext();
-  const { location } = state;
+  const { ambulance } = state;
 
-  const [ambPath, setAmbPath] = useState<
-    FeatureCollection | null | undefined
-  >();
-  const [bounds, setBounds] = useState<LatLngBounds | null>(null);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  const handleCancelEmergency = () => {
+    if (confirm("Sei sicuro di voler annullare la richiesta di emergenza?")) {
+      setLocation("/");
+    }
+  };
 
   useEffect(() => {
-    const fetchAmbPath = async () => {
-      if (!location) return;
-
-      const result = await getAmbulancePath(
-        44.491799,
-        11.356466,
-        location.latitude,
-        location.longitude
-      );
-
-      if (result) {
-        setAmbPath(result.geoJson);
-        setBounds(result.bounds);
-      } else {
-        setAmbPath(null);
-        setBounds(null);
-      }
-    };
-
-    fetchAmbPath();
-  }, [location]);
+    if (stepIndex < steps.length - 1) {
+      const timer = setTimeout(() => setStepIndex(stepIndex + 1), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [stepIndex]);
 
   return (
-    <div className="px-4 py-6 pb-20">
-      <AppHeader
-        title="Soccorso in corso"
-        showBackButton
-        showProfile={false}
-        showWeather={false}
-      />
+    <div className="h-full flex flex-col">
+      <div className="bg-emergency p-4 flex items-center">
+        <h1 className="text-xl font-bold text-white flex-1 text-center">
+          Emergenza in corso
+        </h1>
+      </div>
 
-      {ambPath === undefined && (
-        <div className="flex flex-col items-center justify-center h-[75vh] border rounded-2xl shadow-md animate-pulse bg-gray-50">
+      {/* Ambulance path rendering */}
+      {ambulance?.path === undefined && (
+        <div className="flex flex-col items-center justify-center h-[6rem] border rounded-2xl shadow-md animate-pulse bg-gray-50">
           <svg
             className="w-12 h-12 text-gray-400 animate-spin mb-4"
             fill="none"
@@ -75,8 +70,8 @@ const EmergencyCoordinationScreen = () => {
         </div>
       )}
 
-      {ambPath === null && (
-        <div className="flex flex-col items-center justify-center h-[75vh] border rounded-2xl shadow-md bg-red-50 text-red-700">
+      {ambulance?.path === null && (
+        <div className="flex flex-col items-center justify-center h-[10rem] border rounded-2xl shadow-md bg-red-50 text-red-700">
           <svg
             className="w-12 h-12 mb-4"
             fill="none"
@@ -95,12 +90,41 @@ const EmergencyCoordinationScreen = () => {
           </p>
         </div>
       )}
-
-      {ambPath && (
-        <div className="h-[75vh] shadow-md rounded-2xl overflow-hidden border">
-          <GeoMap geoJsonData={ambPath} bounds={bounds} />
+      {ambulance?.path && (
+        <div className="space-y-2">
+          <h2 className="text-xl md:text-2xl font-bold text-emergency">
+            🚑 Ambulanza in arrivo
+          </h2>
+          <div className="h-[300px] shadow-md rounded-2xl overflow-hidden border">
+            <GeoMap geoJsonData={ambulance.path} bounds={ambulance.bounds} />
+          </div>
         </div>
       )}
+
+      {/* Step-by-step emergency status */}
+      <div className="space-y-4">
+        {steps.slice(0, stepIndex + 1).map((step, idx) => (
+          <div
+            key={idx}
+            className="flex items-start gap-4 p-4 rounded-2xl bg-white shadow-lg border border-gray-200"
+          >
+            <div className="text-3xl">{step.icon}</div>
+            <p className="text-xl md:text-lg font-medium text-gray-800 whitespace-pre-line">
+              {step.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 place-items-center mb-4 w-full">
+        <button
+          className="w-full bg-darkSurface border border-emergency p-3 rounded-lg flex flex-col items-center justify-center text-emergency"
+          onClick={handleCancelEmergency}
+        >
+          <span className="material-icons text-2xl mb-1">cancel</span>
+          <span className="text-lg">Annulla SOS</span>
+        </button>
+      </div>
     </div>
   );
 };
