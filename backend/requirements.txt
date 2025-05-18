@@ -1,13 +1,4 @@
-fastapi
-uvicorn
-python-multipart
-pydantic
-openai-whisper
-torch
-python-dotenv
-osmnx
-networkx
-geopandas
-shapely
-json
-scikit-learn
+click==8.2.0
+h11==0.16.0
+typing_extensions==4.13.2
+uvicorn==0.34.2
