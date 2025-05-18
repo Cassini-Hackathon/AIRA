@@ -59,6 +59,7 @@ export async function getAmbulancePath(
     });
 
     const bounds = L.latLngBounds(coords);
+    
 
     return { geoJson, bounds };
   } catch (error) {

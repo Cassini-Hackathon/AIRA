@@ -53,7 +53,10 @@ const HomePage = () => {
 
       <div className="relative w-[280px] h-[280px] flex items-center justify-center mb-6 m-auto">
         {/* Alone animato */}
-        <div className="absolute inset-0 rounded-full bg-red-500 opacity-30 animate-ping scale-105"></div>
+        <div
+          className="absolute inset-0 rounded-full bg-red-500 opacity-30 animate-ping scale-105"
+          style={{ animationDuration: "2s" }} // 👈 Animazione rallentata
+        ></div>
 
         {/* Pulsante */}
         <button

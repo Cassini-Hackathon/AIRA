@@ -81,7 +81,7 @@ const EmergencyRequestPage = () => {
 
       <div className="bg-white rounded-2xl shadow-lg p-4 mb-6">
         <h2 className="text-xl font-bold mb-4">
-          La tua posizione {userLocation.longitude}, {userLocation.latitude}
+          La tua posizione {userLocation.latitude}, {userLocation.longitude}
         </h2>
       </div>
 
