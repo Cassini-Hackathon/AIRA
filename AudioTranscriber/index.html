@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIRA Media Processor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f9fc;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f0f7ff;
+            border-left: 4px solid #3498db;
+        }
+
+        .error {
+            background-color: #ffebee;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .api-option {
+            margin-bottom: 15px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #ecf0f1;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            background-color: #fff;
+            border-bottom: 3px solid #3498db;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AIRA Media Processor</h1>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="audio">Audio Transcriber</div>
+        <div class="tab" data-tab="image">Image Describer</div>
+    </div>
+
+    <div id="audio-tab" class="tab-content active">
+        <div class="container">
+            <div class="form-group api-option">
+                <label>API da usare:</label>
+                <input type="radio" id="api-upload" name="api-choice" value="upload" checked>
+                <label for="api-upload">Upload File (POST /transcribe-upload)</label>
+
+                <input type="radio" id="api-transcribe" name="api-choice" value="transcribe">
+                <label for="api-transcribe">Transcribe (POST /transcribe)</label>
+            </div>
+
+            <div class="form-group">
+                <label for="audio-file">Seleziona un file audio MP3:</label>
+                <input type="file" id="audio-file" class="file-input" accept=".mp3,audio/mpeg">
+            </div>
+
+            <button id="transcribe-btn" class="btn" disabled>Trascrivi Audio</button>
+
+            <div id="audio-loading" class="loading">
+                <div class="spinner"></div>
+                <p>Trascrizione in corso...</p>
+            </div>
+
+            <div id="audio-result" class="result" style="display: none;">
+                <h3>Trascrizione:</h3>
+                <p id="transcription-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-tab" class="tab-content">
+        <div class="container">
+            <div class="form-group api-option">
+                <label>API da usare:</label>
+                <input type="radio" id="api-image-upload" name="image-api-choice" value="upload" checked>
+                <label for="api-image-upload">Upload File (POST /image-to-text/describe-upload)</label>
+
+                <input type="radio" id="api-image-describe" name="image-api-choice" value="describe">
+                <label for="api-image-describe">Base64 (POST /image-to-text/describe)</label>
+            </div>
+
+            <div class="form-group">
+                <label for="image-file">Seleziona un'immagine (JPG, PNG, etc.):</label>
+                <input type="file" id="image-file" class="file-input" accept="image/*">
+            </div>
+
+            <button id="describe-btn" class="btn" disabled>Descrivi Immagine</button>
+
+            <div id="image-loading" class="loading">
+                <div class="spinner"></div>
+                <p>Elaborazione immagine in corso...</p>
+            </div>
+
+            <div id="image-result" class="result" style="display: none;">
+                <h3>Descrizione:</h3>
+                <p id="image-description-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestione tab
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+
+                // Attiva il tab selezionato
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Mostra il contenuto del tab selezionato
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tabId}-tab`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Audio Transcription
+        const audioFileInput = document.getElementById('audio-file');
+        const transcribeBtn = document.getElementById('transcribe-btn');
+        const audioLoadingElement = document.getElementById('audio-loading');
+        const audioResultElement = document.getElementById('audio-result');
+        const transcriptionText = document.getElementById('transcription-text');
+        const apiUploadRadio = document.getElementById('api-upload');
+        const apiTranscribeRadio = document.getElementById('api-transcribe');
+
+        // Image Description
+        const imageFileInput = document.getElementById('image-file');
+        const describeBtn = document.getElementById('describe-btn');
+        const imageLoadingElement = document.getElementById('image-loading');
+        const imageResultElement = document.getElementById('image-result');
+        const imageDescriptionText = document.getElementById('image-description-text');
+        const apiImageUploadRadio = document.getElementById('api-image-upload');
+        const apiImageDescribeRadio = document.getElementById('api-image-describe');
+
+        // Base URL del backend
+        const API_BASE_URL = 'http://127.0.0.1:8006';
+
+        // Abilita/disabilita pulsante in base alla selezione del file audio
+        audioFileInput.addEventListener('change', () => {
+            transcribeBtn.disabled = !audioFileInput.files.length;
+        });
+
+        // Abilita/disabilita pulsante in base alla selezione dell'immagine
+        imageFileInput.addEventListener('change', () => {
+            describeBtn.disabled = !imageFileInput.files.length;
+        });
+
+        // Gestisci invio del form audio
+        transcribeBtn.addEventListener('click', async () => {
+            const file = audioFileInput.files[0];
+            if (!file) return;
+
+            // Mostra il loader
+            audioLoadingElement.style.display = 'block';
+            audioResultElement.style.display = 'none';
+
+            try {
+                let response;
+
+                // Scelta dell'API in base al radio button selezionato
+                if (apiUploadRadio.checked) {
+                    // Usa l'API di upload (POST con FormData)
+                    const formData = new FormData();
+                    formData.append('audio_file', file);
+
+                    response = await fetch(`${API_BASE_URL}/speech-to-text/transcribe-upload`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } else {
+                    // Usa l'API di trascrizione (POST con Base64)
+                    // Leggi il file come Base64
+                    const base64Data = await readFileAsBase64(file);
+
+                    // Invia la richiesta POST con il file base64 nel corpo JSON
+                    response = await fetch(`${API_BASE_URL}/speech-to-text/transcribe`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            file_base64: base64Data
+                        })
+                    });
+                }
+
+                const data = await response.json();
+
+                // Nascondi il loader
+                audioLoadingElement.style.display = 'none';
+
+                // Visualizza il risultato
+                audioResultElement.style.display = 'block';
+                if (data.error) {
+                    audioResultElement.classList.add('error');
+                    transcriptionText.textContent = `Errore: ${data.error}`;
+                } else {
+                    audioResultElement.classList.remove('error');
+                    transcriptionText.textContent = data.text || 'Nessun testo trovato nella trascrizione.';
+                }
+            } catch (error) {
+                console.error('Errore durante la trascrizione:', error);
+
+                // Nascondi il loader
+                audioLoadingElement.style.display = 'none';
+
+                // Visualizza l'errore
+                audioResultElement.style.display = 'block';
+                audioResultElement.classList.add('error');
+                transcriptionText.textContent = `Errore durante la richiesta: ${error.message}`;
+            }
+        });
+
+        // Gestisci invio del form immagine
+        describeBtn.addEventListener('click', async () => {
+            const file = imageFileInput.files[0];
+            if (!file) return;
+
+            // Mostra il loader
+            imageLoadingElement.style.display = 'block';
+            imageResultElement.style.display = 'none';
+
+            try {
+                let response;
+
+                // Scelta dell'API in base al radio button selezionato
+                if (apiImageUploadRadio.checked) {
+                    // Usa l'API di upload (POST con FormData)
+                    const formData = new FormData();
+                    formData.append('image_file', file);
+
+                    const uploadUrl = `${API_BASE_URL}/image-to-text/describe-upload`;
+                    console.log("Chiamando URL:", uploadUrl);
+
+                    response = await fetch(uploadUrl, {
+                        method: 'POST',
+                        body: formData
+                    });
+                } else {
+                    // Usa l'API di descrizione (POST con Base64)
+                    // Leggi il file come Base64
+                    const base64Data = await readFileAsBase64(file);
+
+                    const describeUrl = `${API_BASE_URL}/image-to-text/describe`;
+                    console.log("Chiamando URL:", describeUrl);
+
+                    // Invia la richiesta POST con il file base64 nel corpo JSON
+                    response = await fetch(describeUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            image_base64: base64Data
+                        })
+                    });
+                }
+
+                const data = await response.json();
+
+                // Nascondi il loader
+                imageLoadingElement.style.display = 'none';
+
+                // Visualizza il risultato
+                imageResultElement.style.display = 'block';
+                if (data.error) {
+                    imageResultElement.classList.add('error');
+                    imageDescriptionText.textContent = `Errore: ${data.error}`;
+                } else {
+                    imageResultElement.classList.remove('error');
+                    imageDescriptionText.textContent = data.caption || 'Nessuna descrizione generata.';
+                }
+            } catch (error) {
+                console.error('Errore durante l\'elaborazione dell\'immagine:', error);
+
+                // Nascondi il loader
+                imageLoadingElement.style.display = 'none';
+
+                // Visualizza l'errore
+                imageResultElement.style.display = 'block';
+                imageResultElement.classList.add('error');
+                imageDescriptionText.textContent = `Errore durante la richiesta: ${error.message}`;
+            }
+        });
+
+        // Funzione per leggere un file come Base64
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Ottieni la stringa base64 rimuovendo il prefisso (es. "data:audio/mpeg;base64,")
+                    const base64String = reader.result.split(',')[1];
+                    resolve(base64String);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+
+</html>
