@@ -1,4 +1,4 @@
-# 🚑 AIRA (Advanced Integrated Response & Aid Assistant)
+# AIRA (Advanced Integrated Response & Aid Assistant)
 
 ## Overview
 
