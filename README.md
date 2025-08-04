@@ -1,26 +1,26 @@
-# 🚑 AIRA+ (Advanced Integrated Response & Aid Assistant)
+# 🚑 AIRA (Advanced Integrated Response & Aid Assistant)
 
-## 🚨 Overview
+## Overview
 
-**AIRA+** is an AI-powered, satellite-enhanced emergency response system designed to revolutionize the way critical medical help is requested, dispatched, and managed.  
-When every second counts, AIRA+ ensures rapid coordination between users, healthcare providers, and emergency vehicles—both manned and unmanned—through intelligent automation and satellite connectivity.
+**AIRA** is an AI-powered, satellite-enhanced emergency response system designed to revolutionize the way critical medical help is requested, dispatched, and managed.  
+When every second counts, AIRA ensures rapid coordination between users, healthcare providers, and emergency vehicles—both manned and unmanned—through intelligent automation and satellite connectivity.
 
 ---
 
-## 🧠 Core Features
+## Core Features
 
-### ✅ Smart Emergency Request Initiation
+###  Smart Emergency Request Initiation
 Users can trigger a distress signal in two intuitive ways:
-- 📞 Traditional voice call to emergency services (e.g. 118)
-- 🤖 AI-assisted reporting: Describe the situation using voice notes, text, or photos.
+- Traditional voice call to emergency services (e.g. 118)
+- AI-assisted reporting: Describe the situation using voice notes, text, or photos.
 
 **Technologies used:**
-- 🗣️ Speech-to-text: Transcription powered by [OpenAI Whisper](https://github.com/openai/whisper)
-- 🖼️ Image captioning: Situation inferred via [BLIP (Bootstrapping Language Image Pretraining)](https://huggingface.co/Salesforce/blip-image-captioning-base)
+- Speech-to-text: Transcription powered by [OpenAI Whisper](https://github.com/openai/whisper)
+- Image captioning: Situation inferred via [BLIP (Bootstrapping Language Image Pretraining)](https://huggingface.co/Salesforce/blip-image-captioning-base)
 
 ---
 
-### 🚑 Autonomous Dispatch Algorithm
+### Autonomous Dispatch Algorithm
 AIRA+ intelligently assesses the emergency type and orchestrates the most effective response by:
 - Analyzing resource availability
 - Calculating real-time proximity via satellite geolocalization
@@ -28,7 +28,7 @@ AIRA+ intelligently assesses the emergency type and orchestrates the most effect
 
 ---
 
-### ✈️ Satellite-Enhanced Routing
+### Satellite-Enhanced Routing
 Our routing engine dynamically optimizes both aerial and ground paths, considering:
 - Real-time weather conditions
 - Terrain morphology and accessibility
@@ -36,8 +36,8 @@ Our routing engine dynamically optimizes both aerial and ground paths, consideri
 
 ---
 
-### 🏥 Hospital Control Panel
-Every healthcare facility is equipped with a powerful admin dashboard that includes:
+### Hospital Control Panel
+Every healthcare facility is equipped with a admin dashboard that includes:
 - Real-time asset tracking map (vehicles, drones, etc.)
 - Emergency history with patient and medical details
 - Inventory of operational assets with data on:
@@ -47,7 +47,7 @@ Every healthcare facility is equipped with a powerful admin dashboard that inclu
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** TypeScript + React  
 - **Mobile Stack:** Capacitor (cross-platform compatibility)  
@@ -58,21 +58,21 @@ Every healthcare facility is equipped with a powerful admin dashboard that inclu
 
 ---
 
-## 🌍 Use of Space Technologies
+## Use of Space Technologies
 
 - **Copernicus CDS** for weather data  
 - **Satellite GNSS** for accurate user geolocation and routing
 
 ---
 
-## 🎯 Impact
+## Target
 
-AIRA+ aims to **shorten emergency response time**, especially in **remote, rural, or disaster-affected areas**, where infrastructure is scarce or overwhelmed.  
+AIRA aims to **shorten emergency response time**, especially in **remote, rural, or disaster-affected areas**, where infrastructure is scarce or overwhelmed.  
 With AI-driven triage and satellite-based logistics, we empower emergency responders to act **smarter**, **faster**, and more **efficiently**, ultimately **saving more lives**.
 
 ---
 
-## 👥 Participants
+## Participants
 
 - **Nicola Ricci Maccarini**  
   BSc student in Computer Science at University of Ferrara  
